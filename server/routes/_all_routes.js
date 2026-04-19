@@ -55,6 +55,7 @@ module.exports.productsRouter = router1;
 // ─────────────────────────────────────────────
 const router2 = require('express').Router();
 const { Order, Notification, Animal } = require('../models');
+// Note: Notification reused below in router7 via same variable — no redeclare needed
 
 router2.get('/', auth, async (req, res) => {
   const filter = req.user.role === 'admin' ? {} : { user_id: req.user.id };
@@ -201,7 +202,7 @@ module.exports.promotionsRouter = router6;
 //  notifications.js
 // ─────────────────────────────────────────────
 const router7 = require('express').Router();
-const { Notification } = require('../models');
+// Notification already declared above (line 57)
 
 router7.get('/', auth, async (req, res) => {
   const notifs = await Notification.find({ user_id: req.user.id }).sort({ createdAt: -1 }).limit(30);
