@@ -15,6 +15,11 @@ jobs:
         with:
           node-version: 20
 
+      - name: Create .env
+        run: |
+          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" > client/.env
+          echo "REACT_APP_SOCKET_URL=${{ secrets.REACT_APP_SOCKET_URL }}" >> client/.env
+
       - name: Install dependencies
         run: |
           cd client
