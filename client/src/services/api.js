@@ -1,3 +1,32 @@
+// backward compat exports
+export const getAnimals       = (p)    => api.getAnimals(p);
+export const getAnimal        = (id)   => api.getAnimal(id);
+export const getProducts      = ()     => api.getProducts();
+export const getProduct       = (id)   => api.getProduct(id);
+export const createProduct    = (d)    => api.createProduct(d);
+export const updateProduct    = (id,d) => api.updateProduct(id,d);
+export const deleteProduct    = (id)   => api.deleteProduct(id);
+export const getPromotions    = ()     => api.getPromotions();
+export const createPromotion  = (d)    => api.createPromotion(d);
+export const deletePromotion  = (id)   => api.deletePromotion(id);
+export const getOrders        = ()     => api.getOrders();
+export const createOrder      = (d)    => api.createOrder(d);
+export const updateOrderStatus= (id,s) => api.updateOrderStatus(id,s);
+export const getComments      = (aid)  => api.getComments(aid);
+export const addComment       = (d)    => api.addComment(d);
+export const deleteComment    = (id)   => api.deleteComment(id);
+export const getMyMessages    = ()     => api.getMyMessages();
+export const getAllMessages    = ()     => api.getAllMessages();
+export const getUserMessages  = (uid)  => api.getUserMessages(uid);
+export const sendMessage      = (d)    => api.sendMessage(d);
+export const getNotifications = ()     => api.getNotifications();
+export const markAllRead      = ()     => api.markAllRead();
+export const createAnimal     = (d)    => api.createAnimal(d);
+export const updateAnimal     = (id,d) => api.updateAnimal(id,d);
+export const deleteAnimal     = (id)   => api.deleteAnimal(id);
+export const getAnimalLogs    = (id)   => api.getAnimalLogs(id);
+export const addAnimalLog     = (id,d) => api.addAnimalLog(id,d);
+
 const BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 const getToken = () => localStorage.getItem('ft_token');
