@@ -16,8 +16,9 @@ export default function Landing() {
 
   useEffect(() => {
     setVisible(true);
-    getAnimals().then(r => {
-      const data = r.data;
+    getAnimals().then(data => {
+      
+      if (!Array.isArray(data)) return;
       setAnimals({
         cow:     data.filter(a => a.type === 'cow').length,
         sheep:   data.filter(a => a.type === 'sheep').length,
@@ -25,7 +26,7 @@ export default function Landing() {
         rabbit:  data.filter(a => a.type === 'rabbit').length,
       });
     }).catch(() => {});
-    getPromotions().then(r => setPromos(r.data)).catch(() => {});
+    getPromotions().then(data => Array.isArray(data) && setPromos(data)).catch(() => {});
     Promise.all([
       fetch(`${process.env.REACT_APP_API_URL}/animals`).then(r => r.json()).catch(() => [])
     ]).then(([animData]) => {
