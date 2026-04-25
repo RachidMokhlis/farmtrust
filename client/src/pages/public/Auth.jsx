@@ -105,3 +105,4 @@ function AuthForm({ mode }) {
 export const Login    = () => <AuthForm mode="login" />;
 export const Register = () => <AuthForm mode="register" />;
 export default Login;
+export { WelcomePopup };
