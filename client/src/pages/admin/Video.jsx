@@ -7,12 +7,18 @@ import { useLang } from '../../context';
 
 export default function AdminVideo() {
   const { t } = useLang();
-  const [url, setUrl]         = useState(null); // 🔴 كان string → ولى file
+  const [url, setUrl]         = useState(null);
   const [current, setCurrent] = useState('');
   const [saving, setSaving]   = useState(false);
 
   useEffect(() => {
-    getVideo().then(d => { if (d?.url) { setCurrent(d.url); } }).catch(() => {});
+    getVideo()
+      .then(d => { 
+        if (d?.url) { 
+          setCurrent(d.url); 
+        } 
+      })
+      .catch(() => {});
   }, []);
 
   const handleSave = async (e) => {
@@ -22,17 +28,22 @@ export default function AdminVideo() {
 
     setSaving(true);
     try {
-      const formData = new FormData();              // 🟢 جديد
-      formData.append('video', url);                // 🟢 جديد
+      const formData = new FormData();
+      formData.append('video', url);
 
-      const res = await setVideo(formData);         // 🟢 بدل url.trim()
-      if (res?.url) setCurrent(res.url);
+      const res = await setVideo(formData);
+
+      // ✅ الإصلاح هنا
+      if (res?.data?.url) {
+        setCurrent(res.data.url);
+      }
 
       toast.success('✅ Video saved!');
     } catch {
       toast.error('Failed to save');
+    } finally {
+      setSaving(false);
     }
-    finally { setSaving(false); }
   };
 
   const handleRemove = async () => {
@@ -42,8 +53,11 @@ export default function AdminVideo() {
       setUrl(null);
       setCurrent('');
       toast.success('Video removed');
-    } catch { toast.error('Failed'); }
-    finally { setSaving(false); }
+    } catch {
+      toast.error('Failed');
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -67,7 +81,6 @@ export default function AdminVideo() {
               Upload vidéo (MP4)
             </label>
 
-            {/* 🔴 هذا هو التغيير المهم */}
             <input
               type="file"
               accept="video/*"
@@ -76,14 +89,40 @@ export default function AdminVideo() {
             />
 
             <div style={{ display:'flex', gap:10 }}>
-              <motion.button type="submit" disabled={saving} whileTap={{ scale:0.97 }}
-                style={{ flex:1, background:'#1B5E20', color:'white', border:'none', borderRadius:12, padding:'12px', fontWeight:700, fontSize:14, cursor:'pointer', opacity:saving?0.7:1 }}>
+              <motion.button
+                type="submit"
+                disabled={saving}
+                whileTap={{ scale:0.97 }}
+                style={{
+                  flex:1,
+                  background:'#1B5E20',
+                  color:'white',
+                  border:'none',
+                  borderRadius:12,
+                  padding:'12px',
+                  fontWeight:700,
+                  fontSize:14,
+                  cursor:'pointer',
+                  opacity:saving ? 0.7 : 1
+                }}>
                 {saving ? 'Saving...' : '💾 Enregistrer la vidéo'}
               </motion.button>
 
               {current && (
-                <button type="button" onClick={handleRemove} disabled={saving}
-                  style={{ padding:'12px 16px', background:'#FFF3E0', color:'#E65100', border:'none', borderRadius:12, fontWeight:700, fontSize:13, cursor:'pointer' }}>
+                <button
+                  type="button"
+                  onClick={handleRemove}
+                  disabled={saving}
+                  style={{
+                    padding:'12px 16px',
+                    background:'#FFF3E0',
+                    color:'#E65100',
+                    border:'none',
+                    borderRadius:12,
+                    fontWeight:700,
+                    fontSize:13,
+                    cursor:'pointer'
+                  }}>
                   🗑️ Supprimer
                 </button>
               )}
@@ -93,8 +132,15 @@ export default function AdminVideo() {
 
         {/* Preview */}
         {current && (
-          <motion.div initial={{ opacity:0, y:10 }} animate={{ opacity:1, y:0 }}
-            style={{ background:'#111', borderRadius:20, overflow:'hidden', boxShadow:'0 12px 40px #0003' }}>
+          <motion.div
+            initial={{ opacity:0, y:10 }}
+            animate={{ opacity:1, y:0 }}
+            style={{
+              background:'#111',
+              borderRadius:20,
+              overflow:'hidden',
+              boxShadow:'0 12px 40px #0003'
+            }}>
             <div style={{ padding:'14px 20px', display:'flex', alignItems:'center', gap:8 }}>
               <span style={{ color:'white', fontWeight:700, fontSize:14 }}>🎬 Aperçu</span>
               <span style={{ fontSize:11, color:'#888', background:'#333', padding:'2px 8px', borderRadius:20 }}>LIVE</span>
@@ -102,9 +148,17 @@ export default function AdminVideo() {
 
             <div style={{ position:'relative', paddingBottom:'56.25%', height:0 }}>
               <video
-                src={current}
+                // ✅ الإصلاح هنا (base URL)
+                src={`${process.env.REACT_APP_API_URL}${current}`}
                 controls
-                style={{ position:'absolute', top:0, left:0, width:'100%', height:'100%', objectFit:'cover' }}
+                style={{
+                  position:'absolute',
+                  top:0,
+                  left:0,
+                  width:'100%',
+                  height:'100%',
+                  objectFit:'cover'
+                }}
               />
             </div>
           </motion.div>
