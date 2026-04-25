@@ -12,14 +12,17 @@ export default function Chat() {
 
   useEffect(() => {
     getMyMessages()
-      .then(r => setMessages(r.data))
+      .then(r => {
+  const data = Array.isArray(r?.data) ? r.data : [];
+  setMessages(data);
+})
       .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
     if (!socket) return;
     socket.on('newMessage', (msg) => {
-      setMessages(prev => [...prev, msg]);
+      setMessages(prev => [...(prev || []), msg]);
     });
     return () => socket.off('newMessage');
   }, [socket]);
@@ -32,7 +35,12 @@ export default function Chat() {
     e.preventDefault();
     if (!text.trim() || !socket) return;
     socket.emit('clientMessage', { userId: user._id, text });
-    setMessages(prev => [...prev, { text, sender: 'client', createdAt: new Date(), _id: Date.now() }]);
+    setMessages(prev => [...(prev || []), {
+  text,
+  sender: 'client',
+  createdAt: new Date(),
+  _id: Date.now()
+}]);
     setText('');
   };
 
@@ -59,13 +67,13 @@ export default function Chat() {
 
         {/* Messages */}
         <div className="h-96 overflow-y-auto p-5 space-y-4 bg-gray-50">
-          {messages.length === 0 && (
+          (messages || []).length === 0 && (
             <div className="text-center text-gray-400 py-10">
               <div className="text-4xl mb-2">👋</div>
               <p className="text-sm">Send a message to start the conversation!</p>
             </div>
           )}
-          {messages.map((msg, i) => (
+          (messages || []).map((msg, i) => (
             <motion.div key={msg._id || i}
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
               className={`flex ${msg.sender === 'client' ? 'justify-end' : 'justify-start'}`}>
