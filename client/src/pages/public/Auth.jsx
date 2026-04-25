@@ -105,4 +105,21 @@ function AuthForm({ mode }) {
 export const Login    = () => <AuthForm mode="login" />;
 export const Register = () => <AuthForm mode="register" />;
 export default Login;
-export { WelcomePopup };
+export function WelcomePopup() {
+  return (
+    <div style={{
+      position: 'fixed',
+      bottom: 20,
+      right: 20,
+      background: '#16a34a',
+      color: 'white',
+      padding: '12px 18px',
+      borderRadius: 12,
+      fontWeight: 600,
+      boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+      zIndex: 9999
+    }}>
+      👋 Welcome to FarmTrust
+    </div>
+  );
+}
