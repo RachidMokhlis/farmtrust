@@ -67,13 +67,13 @@ export default function Chat() {
 
         {/* Messages */}
         <div className="h-96 overflow-y-auto p-5 space-y-4 bg-gray-50">
-          (messages || []).length === 0 && (
+          {(messages || []).length === 0 && (
             <div className="text-center text-gray-400 py-10">
               <div className="text-4xl mb-2">👋</div>
               <p className="text-sm">Send a message to start the conversation!</p>
             </div>
           )}
-          (messages || []).map((msg, i) => (
+          {(messages || []).map((msg, i) => (
             <motion.div key={msg._id || i}
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
               className={`flex ${msg.sender === 'client' ? 'justify-end' : 'justify-start'}`}>
