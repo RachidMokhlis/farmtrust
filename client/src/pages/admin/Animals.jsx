@@ -17,14 +17,8 @@ export default function AdminAnimals() {
   const [images, setImages]     = useState([]);
   const [saving, setSaving]     = useState(false);
 
-  const load = () => {
-  return getAnimals()
-    .then(r => {
-      const data = Array.isArray(r?.data) ? r.data : [];
-      setAnimals(data);
-    })
-    .finally(() => setLoading(false));
-};
+  const load = () =>
+  getAnimals()
     .then(r => {
       const data = Array.isArray(r?.data) ? r.data : [];
       setAnimals(data);
