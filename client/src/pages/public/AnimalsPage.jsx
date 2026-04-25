@@ -17,13 +17,21 @@ export default function AnimalsPage() {
 
   useEffect(() => {
     getAnimals()
-      .then(r => { setAnimals(r.data); setFiltered(r.data); })
+      .then(r => {
+  const data = Array.isArray(r?.data) ? r.data : [];
+  setAnimals(data);
+  setFiltered(data);
+})
       .catch(() => toast.error('Failed to load animals'))
       .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
-    setFiltered(activeType === 'all' ? animals : animals.filter(a => a.type === activeType));
+    setFiltered(
+  activeType === 'all'
+    ? animals
+    : (animals || []).filter(a => a.type === activeType)
+);
   }, [activeType, animals]);
 
   if (loading) return (
@@ -49,7 +57,7 @@ export default function AnimalsPage() {
         ))}
       </div>
 
-      {filtered.length === 0 ? (
+      {(filtered || []).length === 0 ? (
         <div className="text-center py-20 text-gray-400">
           <div className="text-5xl mb-4">🌾</div>
           <p>No animals found</p>
