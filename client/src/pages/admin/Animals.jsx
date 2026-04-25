@@ -17,7 +17,19 @@ export default function AdminAnimals() {
   const [images, setImages]     = useState([]);
   const [saving, setSaving]     = useState(false);
 
-  const load = () => getAnimals().then(r => setAnimals(r.data)).finally(() => setLoading(false));
+  const load = () => {
+  return getAnimals()
+    .then(r => {
+      const data = Array.isArray(r?.data) ? r.data : [];
+      setAnimals(data);
+    })
+    .finally(() => setLoading(false));
+};
+    .then(r => {
+      const data = Array.isArray(r?.data) ? r.data : [];
+      setAnimals(data);
+    })
+    .finally(() => setLoading(false));
   useEffect(() => { load(); }, []);
 
   const openAdd  = () => { setEditing(null); setForm(EMPTY); setImages([]); setShowForm(true); };
@@ -126,7 +138,7 @@ export default function AdminAnimals() {
       {loading
         ? <div className="flex justify-center py-20"><div className="animate-spin w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full"/></div>
         : <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {animals.map((a, i) => (
+            {(animals || []).map((a, i) => (
               <motion.div key={a._id} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="card">
                 <div className="h-32 bg-green-50 rounded-xl flex items-center justify-center mb-3 text-5xl">
                   {a.images?.[0]
