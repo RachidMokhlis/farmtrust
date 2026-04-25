@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Playfair+Display:wght@700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Tajawal', sans-serif;
+  background: #0f1f0f;
+  color: #fff;
+  direction: rtl;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0f1f0f;
+}
+::-webkit-scrollbar-thumb {
+  background: #2d5a1b;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f0c040;
+}
+
+input, select, textarea {
+  font-family: 'Tajawal', sans-serif;
+  direction: rtl;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  font-family: 'Tajawal', sans-serif;
+  transition: all 0.2s ease;
+}
