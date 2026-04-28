@@ -29,9 +29,8 @@ router.get('/', async (req, res) => {
     if (type)   filter.type = type;
     if (status) filter.status = status;
     const animals = await Animal.find(filter)
-  .sort({ createdAt: -1 })
-  .limit(50)
-  .select('-images');
+  .sort({ _id: -1 })   // sort خفيف
+  .limit(22);          // عدد قليل باش ما يثقلش
     res.json(animals);
   } catch (err) {
     console.error('GET /animals error:', err);
