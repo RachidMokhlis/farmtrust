@@ -17,21 +17,23 @@ const io = new Server(server, {
   allowEIO3: true,
 });
 
-// ─── CORS — allow all origins ───────────────────────────
+// ─── CORS ───────────────────────────────────────────────
 const corsOptions = {
-  origin: '*',
+  origin: "https://farmtrust-rashid.kesug.com",
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 };
+
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 
-// ─── Body parsers ────────────────────────────────────────
+// ─── Body parsers ───────────────────────────────────────
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// ─── Routes ──────────────────────────────────────────────
+// ─── Routes ─────────────────────────────────────────────
 app.use('/api/auth',          require('./routes/auth'));
 app.use('/api/animals',       require('./routes/animals'));
 app.use('/api/products',      require('./routes/products'));
@@ -45,16 +47,19 @@ app.use('/api/logs',          require('./routes/logs'));
 app.use('/api/stats',         require('./routes/stats'));
 app.use('/api/video',         require('./routes/video'));
 
-// ─── Health check ────────────────────────────────────────
+// ─── Health check ───────────────────────────────────────
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
-// ─── Socket.io ───────────────────────────────────────────
+// ─── Socket.io ──────────────────────────────────────────
 require('./utils/socket')(io);
 
-// ─── MongoDB ─────────────────────────────────────────────
+// ─── MongoDB ────────────────────────────────────────────
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ MongoDB connected'))
   .catch(err => console.error('❌ MongoDB error:', err));
 
+// ─── Start server ────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, '0.0.0.0', () => console.log(`🚀 Server running on port ${PORT}`));
+server.listen(PORT, '0.0.0.0', () =>
+  console.log(`🚀 Server running on port ${PORT}`)
+);
