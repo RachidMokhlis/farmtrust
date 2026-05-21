@@ -1,4 +1,4 @@
-const BASE = 'https://farmtrust-production-0a18.up.railway.app/api';
+const BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 const req = async (method, path, body, isForm = false) => {
   const token = localStorage.getItem('ft_token');
